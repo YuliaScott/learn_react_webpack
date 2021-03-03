@@ -1,0 +1,12 @@
+:root {
+  --fontFamily: "Times New Roman";
+}
+
+.container {
+  display: grid;
+}
+
+.app {
+  background: red; /* !important; */
+  font-family: var(--fontFamily);
+}
