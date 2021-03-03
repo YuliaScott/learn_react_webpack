@@ -13,7 +13,7 @@
         "build": "set ENV=production&& webpack",
         "dev": "set ENV=development&& webpack-dashboard -- webpack-dev-server",
         "test:size": "bundlesize",
-        "esfix": "eslint --fix --ext .js src"
+        "esfix": "yarn eslint --fix --ext .js ./src"
     },
     "author": "",
     "license": "ISC",
