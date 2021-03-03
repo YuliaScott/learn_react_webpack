@@ -2,29 +2,20 @@
 /* eslint-disable no-undef */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Analyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const DashboardPlugin = require('webpack-dashboard/plugin');
-
-let ENV = process.env.ENV;
-let isProd = ENV === 'production';
+// const DashboardPlugin=require('webpack-dashboard/plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const path = require('path');
 
 module.exports = {
     entry: './src/index.js',
     output: {
-        ////注释代码分片
-        // filename: isProd ? 'bundle@[chunkhash].js' : '[name].js', //:'bundle.js',
-        filename: isProd ? 'bundle@[chunkhash].js' : 'bundle.js',
+        filename: 'bundle.js',
+        path: path.resolve(process.cwd(), 'dist'), //必须配置这行代码，否则无法删除/dist/目录中的文件(写法不止一种)
     },
-    mode: ENV,
     devtool: 'source-map',
     optimization: {
         minimize: true,
     },
-    ////注释代码分片
-    // optimization: {
-    //     splitChunks: {
-    //         chunks: 'all'
-    //     }
-    // },
     module: {
         rules: [{
             test: /\.css$/,
@@ -35,15 +26,16 @@ module.exports = {
                 }
             }, 'postcss-loader'],
             exclude: /node_modules/, //node_modules中的模块不会执行这条规则 #/src\/pages/
-        }, {
-            test: /\.(png|svg|jpg|gif)$/,
-            use: {
-                loader: 'file-loader',
-                options: {
-                    name: '[name].[ext]',
-                    publicPath: isProd ? '/dist/' : '/',
-                }
-            }
+            ////配置在开发和生产环境各自的配置文件中
+            // }, {
+            //     test: /\.(png|svg|jpg|gif)$/,
+            //     use: {
+            //         loader: 'file-loader',
+            //         options: {
+            //             name: '[name].[ext]',
+            //             publicPath: '/dist/',
+            //         }
+            //     }
         }, {
             test: /\.(js|jsx)$/,
             use: {
@@ -87,6 +79,10 @@ module.exports = {
         ////生成bundle模块组成结构图
         new Analyzer(),
         ////更好地展示打包信息
-        new DashboardPlugin(),
+        // new DashboardPlugin(),
+        ////自动清除上一次打包构建目录文件
+        new CleanWebpackPlugin({
+            cleanOnceBeforeBuildPatterns: ['./dist/*'] //配置./dist/*或./dist/images/*,测试无差别(20210302)
+        }),
     ]
 }
