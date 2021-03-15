@@ -3,6 +3,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Analyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const DashboardPlugin = require('webpack-dashboard/plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 let ENV = process.env.ENV;
 let isProd = ENV === 'production';
@@ -41,7 +42,7 @@ module.exports = {
                 loader: 'file-loader',
                 options: {
                     name: '[name].[ext]',
-                    publicPath: isProd ? '/dist/' : '/',
+                    publicPath: '/',
                 }
             }
         }, {
@@ -88,5 +89,14 @@ module.exports = {
         new Analyzer(),
         ////更好地展示打包信息
         new DashboardPlugin(),
+        ////打包时拷贝文件
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: 'public/img/',
+                    to: 'img/',
+                }
+            ]
+        })
     ]
 }
