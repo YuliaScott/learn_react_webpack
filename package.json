@@ -11,7 +11,7 @@
     "main": "index.js",
     "scripts": {
         "build": "set ENV=production&& webpack",
-        "dev": "set ENV=development&& webpack-dashboard -- webpack-dev-server",
+        "dev": "set ENV=development&& webpack-dashboard -- webpack-dev-server --open",
         "test:size": "bundlesize",
         "esfix": "yarn eslint --fix --ext .js ./src"
     },
